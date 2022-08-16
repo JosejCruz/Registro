@@ -1,12 +1,88 @@
-import React from 'react'
+import React, { useState } from 'react'
+//importamos los objetos json
+import {Pacientejson} from '../components/objects/Paciente'
+import {Medicojson} from '../components/objects/Medico'
+import {Segurojson} from '../components/objects/Seguro'
+import {Ingresojson} from '../components/objects/Ingreso'
+//----//----//----//
 
 function Registro() {
+  //Estados de Pruebas
+  const [Paciente, setPaciente] = useState(Pacientejson);
+  const [Medico, setMedico] = useState(Medicojson);
+  const [Seguro, setSeguro] = useState(Segurojson);
+  const [Ingreso, setIngreso] = useState(Ingresojson);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPaciente({ ...Paciente, [name]: value });
+  };
+
+  const [msg, setMsg] = useState({
+    message: "",
+    color: "",
+    visible: "no",
+  });
+
+  const Mensaje = () => {
+    if (msg.visible === 'si') {
+      return(
+        <div className={"alert alert-" + msg.color} role="alert">
+            {msg.message}
+          </div>
+      )
+    }else{
+      return ('');
+    }
+  }
+
+  const Mostrar = () => {
+    setMsg({
+      message: "Se ha creado el producto correctamente",
+      color: "success",
+      visible: "si",
+    });
+    setTimeout(() => {
+      setMsg({
+        message: "",
+        color: "",
+        visible: "no",
+      })
+    }, 5000);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const content = await response.json();
+    setMsg(
+      content.msg === 1
+        ? {
+            message: "Se ha creado el producto correctamente",
+            color: "success",
+            visible: "si",
+          }
+        : {
+            message: "No se ha podido crear el producto",
+            color: "danger",
+            visible: "si",
+          }
+    );
+    setPaciente(Pacientejson);
+  };
+
+
+
+
   return (
     <>
+      <div className='container p-4'>
+        <h1 className='text-center'>Nuevo Paciente</h1>
+        <Mensaje/>
+      </div>
       <div className="container mt-3">
         <div className="row">
           <div className="col-sm-4 col-md-2 col-lg-2 mb-4">
-            <button className="btn">
+            <button className="btn" onClick={Mostrar}>
               <ion-icon name="arrow-back-circle"></ion-icon>
             </button>
           </div>
