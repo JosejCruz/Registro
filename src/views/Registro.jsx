@@ -27,22 +27,33 @@ function Registro() {
     setSeguro({...Seguro, [name]: value });
   };
 
-  
+  const guardar = () => {
+    const newIngreso = {
+      Paciente,
+      Medico,
+      Seguro
+    }
+    setIngreso(newIngreso);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMsg(
-      content.msg === 1
-      ? {
-        message: "Se ha registrado al paciente correctamente",
-        color: "success",
-        visible: "si",
-      }
-      : {
-        message: "No se ha podido registrar al paciente",
-        color: "danger",
-        visible: "si",
-      }
-      );
+    setMsg(Ingreso.Paciente.ID != '' ? {
+          message: "Se ha registrado al paciente correctamente",
+          color: "success",
+          visible: "si",
+        } : {
+          message: "No se ha podido registrar al paciente",
+          color: "danger",
+          visible: "si",
+        });
+    setTimeout(() => {
+        setMsg({
+          message: "",
+          color: "",
+          visible: "no",
+        })
+      }, 5000);
     };
     
 //Pruebas para mostrar mensaje cuando se realizo el registro de Paciente
@@ -211,7 +222,7 @@ function Registro() {
               <label htmlFor="floatingInput">Cobertura</label>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-4 d-grid gap-2">
-              <button className="btn btn-primary mb-2">
+              <button className="btn btn-primary mb-2" onClick={guardar}>
                 <ion-icon name="save-outline"></ion-icon> Guardar
               </button>
             </div>
