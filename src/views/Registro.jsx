@@ -16,7 +16,12 @@ function Registro() {
 
   //Estado para Loading spinner
   const [spinner, setSpinner] = useState(false);
-  
+  const CambiarEstado = () => {
+    setSpinner (true)
+    setTimeout (()=>{
+      setSpinner(false);
+    }, 5000)
+  }
   //----//----//----//
 
   const handleChangePaciente = (e) => {
@@ -251,7 +256,7 @@ function Registro() {
               </button>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-4 d-grid gap-2">
-              <button className="btn btn-danger  mb-2">
+              <button className="btn btn-danger  mb-2" onClick={CambiarEstado}>
                 <ion-icon name="ban-outline"></ion-icon> Cancelar
               </button>
             </div>
