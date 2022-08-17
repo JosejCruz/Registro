@@ -5,6 +5,7 @@ import {Medicojson} from '../components/objects/Medico'
 import {Segurojson} from '../components/objects/Seguro'
 import {Ingresojson} from '../components/objects/Ingreso'
 //----//----//----//
+import Loading from '../components/loading/Loading'
 
 function Registro() {
   //Estados de Pruebas
@@ -14,7 +15,8 @@ function Registro() {
   const [Ingreso, setIngreso] = useState(Ingresojson);
 
   //Estado para Loading spinner
-  const [loading, setLoading] = useState(false);
+  const [spinner, setSpinner] = useState(false);
+  
   //----//----//----//
 
   const handleChangePaciente = (e) => {
@@ -41,7 +43,6 @@ function Registro() {
   };
   useEffect (()=>{
     if (Ingreso.Paciente.ID !== "") {
-      setLoading(true);
       setMsg(
         Ingreso.Paciente.ID != ""
           ? {
@@ -55,15 +56,22 @@ function Registro() {
               visible: "si",
             }
       );
+      setSpinner(true);
       setTimeout(() => {
-        setMsg({
-          message: "",
-          color: "",
-          visible: "no",
-        });
-        setIngreso(Ingresojson);
+        setSpinner(false);
+        setTimeout(() => {
+          setMsg({
+            message: "",
+            color: "",
+            visible: "no",
+          });
+          setIngreso(Ingresojson);
+          setMedico(Medicojson);
+          setPaciente(Pacientejson);
+          setSeguro(Segurojson);
+        }, 5000);
       }, 5000);
-      setLoading(false);
+
     }else{
       console.log('no ray nada que mostrar')
     }
@@ -250,6 +258,7 @@ function Registro() {
           </div>
         </form>
       </div>
+      {spinner&&<Loading/>}
     </>
   );
 }
