@@ -13,6 +13,10 @@ function Registro() {
   const [Seguro, setSeguro] = useState(Segurojson);
   const [Ingreso, setIngreso] = useState(Ingresojson);
 
+  //Estado para Loading spinner
+  const [loading, setLoading] = useState(false);
+  //----//----//----//
+
   const handleChangePaciente = (e) => {
     const { name, value } = e.target;
     setPaciente({...Paciente, [name]: value });
@@ -27,33 +31,39 @@ function Registro() {
     setSeguro({...Seguro, [name]: value });
   };
 
-  const guardar = () => {
+  const guardar = async () => {
     const newIngreso = {
       Paciente,
       Medico,
-      Seguro
-    }
-    setIngreso(newIngreso);
-  }
+      Seguro,
+    };
+    await Promise.all(setIngreso ( newIngreso ),setLoading(true));
+    setMsg(
+      Ingreso.Paciente.ID != ""
+        ? {
+            message: "Se ha registrado al paciente correctamente",
+            color: "success",
+            visible: "si",
+          }
+        : {
+            message: "No se ha podido registrar al paciente",
+            color: "danger",
+            visible: "si",
+          }
+    );
+    setTimeout(() => {
+      setMsg({
+        message: "",
+        color: "",
+        visible: "no",
+      });
+    }, 5000);
+
+    setLoading(false);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMsg(Ingreso.Paciente.ID != '' ? {
-          message: "Se ha registrado al paciente correctamente",
-          color: "success",
-          visible: "si",
-        } : {
-          message: "No se ha podido registrar al paciente",
-          color: "danger",
-          visible: "si",
-        });
-    setTimeout(() => {
-        setMsg({
-          message: "",
-          color: "",
-          visible: "no",
-        })
-      }, 5000);
+    e.preventDefault()
     };
     
 //Pruebas para mostrar mensaje cuando se realizo el registro de Paciente
@@ -93,8 +103,7 @@ function Registro() {
 
   return (
     <>
-      <div className='container p-4'>
-        <h1 className='text-center'>Nuevo Paciente</h1>
+      <div className='container pt-2'>
         <Mensaje/>
       </div>
       <div className="container mt-3">
@@ -108,7 +117,7 @@ function Registro() {
             <h1 className="text-center">Pre - Registro</h1>
           </div>
         </div>
-        <form className="form-control" onSubmit={handleSubmit} >
+        <form className="form-control pt-4" onSubmit={handleSubmit} >
           <div className="row">
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
             <input
@@ -130,7 +139,7 @@ function Registro() {
               <label htmlFor="floatingInput">Fecha</label>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-4 mb-2 d-grid gap-2">
-              <button className="btn btn-success">
+              <button className="btn btn-success" >
                 Buscar <ion-icon name="search"></ion-icon>
               </button>
             </div>
