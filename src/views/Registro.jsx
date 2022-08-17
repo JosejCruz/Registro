@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 //importamos los objetos json
 import {Pacientejson} from '../components/objects/Paciente'
 import {Medicojson} from '../components/objects/Medico'
@@ -31,40 +31,47 @@ function Registro() {
     setSeguro({...Seguro, [name]: value });
   };
 
-  const guardar = async () => {
+  const guardar = () => {
     const newIngreso = {
       Paciente,
       Medico,
       Seguro,
     };
-    await Promise.all(setIngreso ( newIngreso ),setLoading(true));
-    setMsg(
-      Ingreso.Paciente.ID != ""
-        ? {
-            message: "Se ha registrado al paciente correctamente",
-            color: "success",
-            visible: "si",
-          }
-        : {
-            message: "No se ha podido registrar al paciente",
-            color: "danger",
-            visible: "si",
-          }
-    );
-    setTimeout(() => {
-      setMsg({
-        message: "",
-        color: "",
-        visible: "no",
-      });
-    }, 5000);
-
-    setLoading(false);
+    setIngreso (newIngreso);
   };
-
+  useEffect (()=>{
+    if (Ingreso.Paciente.ID !== "") {
+      setLoading(true);
+      setMsg(
+        Ingreso.Paciente.ID != ""
+          ? {
+              message: "Se ha registrado al paciente correctamente",
+              color: "success",
+              visible: "si",
+            }
+          : {
+              message: "No se ha podido registrar al paciente",
+              color: "danger",
+              visible: "si",
+            }
+      );
+      setTimeout(() => {
+        setMsg({
+          message: "",
+          color: "",
+          visible: "no",
+        });
+        setIngreso(Ingresojson);
+      }, 5000);
+      setLoading(false);
+    }else{
+      console.log('no ray nada que mostrar')
+    }
+  }, [Ingreso])
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
-    };
+  };
     
 //Pruebas para mostrar mensaje cuando se realizo el registro de Paciente
     const [msg, setMsg] = useState({
@@ -99,10 +106,10 @@ function Registro() {
         })
       }, 5000);
     };
-//----//----//----//
-
-  return (
-    <>
+    //----//----//----//
+    
+    return (
+      <>
       <div className='container pt-2'>
         <Mensaje/>
       </div>
@@ -127,7 +134,7 @@ function Registro() {
                   className="form-control mb-2"
                   placeholder="CI"
                   name="ID"
-                />
+                  />
               <label htmlFor="floatingInput">CI</label>
             </div>
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
@@ -135,7 +142,7 @@ function Registro() {
                 type="date"
                 className="col-sm-12 col-md-4 col-lg-4 form-control mb-2"
                 required
-              />
+                />
               <label htmlFor="floatingInput">Fecha</label>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-4 mb-2 d-grid gap-2">
@@ -151,7 +158,7 @@ function Registro() {
                   className="form-control mb-2"
                   placeholder="Nombre Completo"
                   name="nombre"
-                />
+                  />
               <label htmlFor="floatingInput">Nombre Completo</label>
             </div>
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
@@ -171,7 +178,7 @@ function Registro() {
                   className="form-control mb-2"
                   placeholder="Edad"
                   name="edad"
-                />
+                  />
               <label htmlFor="floatingInput">Edad</label>
             </div>
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
@@ -182,7 +189,7 @@ function Registro() {
                   className="form-control mb-2"
                   placeholder="Telefono"
                   name="telefono"
-                />
+                  />
               <label htmlFor="floatingInput">Teléfono</label>
             </div>
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
@@ -193,7 +200,7 @@ function Registro() {
                   className="form-control mb-2"
                   placeholder="Correo"
                   name="correo"
-                />
+                  />
               <label htmlFor="floatingInput">Correo</label>
             </div>
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
@@ -204,7 +211,7 @@ function Registro() {
                 className="form-control mb-2"
                 placeholder="Nombre Medico"
                 name="nombre"
-              />
+                />
               <label htmlFor="floatingInput">Medico</label>
             </div>
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
@@ -215,7 +222,7 @@ function Registro() {
                 className="form-control mb-2"
                 placeholder="Nombre Seguro"
                 name="nombre"
-              />
+                />
               <label htmlFor="floatingInput">Seguro</label>
             </div>
             <div className="form-floating col-sm-12 col-md-4 col-lg-4">
@@ -227,7 +234,7 @@ function Registro() {
                 className="form-control mb-2"
                 placeholder="cobertura"
                 name="cobertura"
-              />
+                />
               <label htmlFor="floatingInput">Cobertura</label>
             </div>
             <div className="col-sm-12 col-md-4 col-lg-4 d-grid gap-2">
@@ -248,3 +255,35 @@ function Registro() {
 }
 
 export default Registro
+
+
+// const guardar = async () => {
+//   const newIngreso = {
+//     Paciente,
+//     Medico,
+//     Seguro,
+//   };
+//   await Promise.all(setIngreso ( newIngreso ),setLoading(true));
+//   setMsg(
+//     Ingreso.Paciente.ID != ""
+//       ? {
+//           message: "Se ha registrado al paciente correctamente",
+//           color: "success",
+//           visible: "si",
+//         }
+//       : {
+//           message: "No se ha podido registrar al paciente",
+//           color: "danger",
+//           visible: "si",
+//         }
+//   );
+//   setTimeout(() => {
+//     setMsg({
+//       message: "",
+//       color: "",
+//       visible: "no",
+//     });
+//   }, 5000);
+
+//   setLoading(false);
+// };
